@@ -32,24 +32,22 @@ DESIGN:
 Overall, main.py acts as the orchestrator of the FastAPI application—clean,
 minimal, and designed to scale as the project grows.
 """
-
-
-
 from fastapi import FastAPI
+from app.routers import recipes
 
-from app.routes.ingredients_routes import router as ingredients_router
-from app.routes.recipe import router as recipe_router
-
-# Create the application instance - this is your API
 app = FastAPI(
-    title="My Recipes",
-    description="A simple API for managing recipes",
+    title="Recipe API",
+    description="A simple FastAPI application for managing recipes.",
     version="1.0.0"
 )
 
-app.include_router(recipe_router)
-app.include_router(ingredients_router)
+app.include_router(
+    recipes.router,
+    prefix="/recipes",
+    tags=["recipes"]
+)
+
 
 @app.get("/")
-def read_root():
-    return {"message": "Welcome to My Recipes"}
+def root():
+    return {"message": "Welcome to the Recipe API"}
